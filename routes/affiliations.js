@@ -1,5 +1,9 @@
 import express from "express";
-import { getAffiliations, addAffiliation, deleteAffiliation } from "../controllers/affiliation.js";
+import {
+  getAffiliations,
+  addAffiliation,
+  deleteAffiliation,
+} from "../controllers/affiliation.js";
 
 const router = express.Router();
 

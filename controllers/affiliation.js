@@ -8,7 +8,7 @@ export const getAffiliations = (req, res) => {
     if (err) return res.status(500).json(err);
     return res
       .status(200)
-      .json(data.map((affiliation) => affiliation.userId));
+      .json(data.map((affiliation) => affiliation.followerUserId));
   });
 };
 
@@ -20,13 +20,13 @@ export const addAffiliation = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
 
     const q =
-      "INSERT INTO affiliations (`followerUserId`, `followedUserId`) VALUES (?)";
+      "INSERT INTO affiliations (`followerUserId`, `followedUserId`) VALUES(?)";
 
     const values = [userInfo.id, req.body.userId];
 
     db.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("Following!");
+      return res.status(200).json("Following");
     });
   });
 };
@@ -43,7 +43,7 @@ export const deleteAffiliation = (req, res) => {
 
     db.query(q, [userInfo.id, req.query.userId], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("Unfollow.");
+      return res.status(200).json("Unfollow");
     });
   });
 };
