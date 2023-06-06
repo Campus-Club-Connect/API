@@ -21,6 +21,54 @@ export const getPosts = (req, res) => {
   });
 };
 
+export const getClubPosts = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not Logged in!");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
+
+    const q = `SELECT p.*, u.id AS userId, name, profilePic
+    FROM posts AS p
+    JOIN users AS u ON (u.id = p.userID)
+    LEFT JOIN affiliations AS a ON (p.userId = a.followedUserId)
+    JOIN clubs AS c ON (c.adminId = u.id)
+    WHERE (a.followerUserId = ? OR p.userId = ?)
+      AND c.adminId = ?
+    ORDER BY p.createdAt DESC
+    
+    `;
+
+    db.query(q, [userInfo.id, userInfo.id, req.params.adminId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(data);
+    });
+  });
+};
+
+export const getClubDiscussions = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not Logged in!");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
+
+    const q = `SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userID) 
+    LEFT JOIN clubjoined AS club ON (p.userId = club.joinedUserId) WHERE (club.targetClubId = ? AND club.joinedUserId = ?) OR p.userId =?
+    ORDER BY p.createdAt DESC
+    `;
+
+    db.query(
+      q,
+      [req.params.targetClubId, userInfo.id, userInfo.id],
+      (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json(data);
+      }
+    );
+  });
+};
+
 export const addPost = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not Logged in!");
