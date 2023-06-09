@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
 import commentRoutes from "./routes/comments.js";
+import chatRoutes from "./routes/chats.js";
 import likeRoutes from "./routes/likes.js";
 import pinRoutes from "./routes/pins.js";
 import affiliationRoutes from "./routes/affiliations.js";
@@ -46,9 +47,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
+app.use("/api/dislikes", likeRoutes);
 app.use("/api/pins", pinRoutes);
 app.use("/api/clubs", clubRoutes);
 app.use("/api/affiliations", affiliationRoutes);
+app.use("/api/chats", chatRoutes);
 
 app.listen(8800, () => {
   console.log("API Working!");
