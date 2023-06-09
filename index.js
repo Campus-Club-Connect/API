@@ -12,7 +12,8 @@ import affiliationRoutes from "./routes/affiliations.js";
 import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
-
+import dotenv from 'dotenv';
+dotenv.config();
 // middlewares
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "api-production-a06e.up.railway.app",
   })
 );
 app.use(cookieParser());
